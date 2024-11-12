@@ -1,6 +1,6 @@
 /*
-Problem 1 : Calculator
-1. Calculator Problem Statement
+Problem 1 :  
+Calculator Problem Statement
  Design a console-based calculator program in C that accepts mathematical
 expressions as input in the form of strings.
 
