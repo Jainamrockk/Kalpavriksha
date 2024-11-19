@@ -22,8 +22,7 @@ content.
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
-
-int Search(int id);
+#include<ctype.h>
 
 typedef struct{
 
@@ -31,6 +30,10 @@ int id,age;
 char name[100];
 } User;
 
+void clearInputBuffer() {
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF);
+}
 
 int Search(int id)
 {
@@ -66,7 +69,7 @@ int Search(int id)
 void Create()
 {
     FILE* fp;
-    fp = fopen("users.txt","a");
+    fp = fopen("users.txt","ab");
     User user;
     if(!fp)
     {
@@ -75,7 +78,12 @@ void Create()
     }
 
     printf("Enter the ID: ");
-    scanf("%d",&user.id);
+     if(scanf("%d", &user.id) != 1) {
+        printf("Error: Invalid ID format. Please enter a number.\n");
+        clearInputBuffer();
+        fclose(fp);
+        return;
+    }
 
     
 
@@ -92,7 +100,12 @@ void Create()
     user.name[strcspn(user.name, "\n")] = 0; // To Remove newline character
 
     printf("Enter the Age: ");
-    scanf("%d",&user.age);
+     if(scanf("%d", &user.age) != 1) {
+        printf("Error: Invalid Age format. Please enter a number.\n");
+        clearInputBuffer();
+        fclose(fp);
+        return;
+    }
 
     fwrite(&user,sizeof(user),1,fp);
 
@@ -127,10 +140,11 @@ void Read()
 
 }
 
+
 void Update()
 {
     FILE* fp;
-    fp = fopen("users.txt","r+");
+    fp = fopen("users.txt","r+b");
     if(fp == NULL)
     {
         printf("Error: Unable to open file.\n");
@@ -141,10 +155,10 @@ void Update()
     printf("Enter the ID of the user you want to update: ");
     scanf("%d",&id);
     int found = 0;
-   int n = CountRecords();
-   for(int i = 0; i < n; i++)
+    long pos = 0;
+  while(fread(&user,sizeof(User),1,fp) == 1)
    {
-         fread(&user,sizeof(user),1,fp);
+         
          if(user.id == id)
          {
               found = 1;
@@ -153,11 +167,22 @@ void Update()
               fgets(user.name,100,stdin);
               user.name[strcspn(user.name, "\n")] = 0; // To Remove newline character
               printf("Enter the new Age: ");
-              scanf("%d",&user.age);
-              fseek(fp,sizeof(user)*i,SEEK_SET);
-              fwrite(&user,sizeof(user),1,fp);
+              if(scanf("%d", &user.age) != 1) {
+        printf("Error: Invalid Age format. Please enter a number.\n");
+        clearInputBuffer();
+        fclose(fp);
+        return;
+    }
+
+              fseek(fp,pos,SEEK_SET);
+               if(fwrite(&user, sizeof(User), 1, fp) != 1) {
+                printf("Error: Failed to update record.\n");
+            } else {
+                printf("User updated successfully.\n");
+            }
               break;
          }
+         pos = ftell(fp);
     }
      if(!found)
      {
@@ -172,65 +197,59 @@ void Delete()
 {
     FILE* fp;
     FILE* fpv;
-    fp = fopen("users.txt","r");
-    fpv = fopen("temp.txt","a");
+    fp = fopen("users.txt","rb");
     if(fp == NULL)
     {
         printf("Error: Unable to open file.\n");
         return;
     }
+    fpv = fopen("temp.txt","wb");
+       if(fpv == NULL) {
+        printf("Error: Unable to create temporary file.\n");
+        fclose(fp);
+        return;
+    }
     User user;
     int id;
     printf("Enter the ID of the user you want to delete: ");
-    scanf("%d",&id);
+    if(scanf("%d", &id) != 1) {
+        printf("Error: Invalid ID format.\n");
+        clearInputBuffer();
+        fclose(fp);
+        fclose(fpv);
+        remove("temp.txt");
+        return;
+    }
     int found = 0;
-    int n = CountRecords();
-    for(int i = 0; i < n; i++)
+    while(fread(&user,sizeof(User),1,fp) == 1)
     {
-        fread(&user,sizeof(user),1,fp);
+        
         if(user.id != id)
         {
-            fwrite(&user,sizeof(user),1,fpv);
-            fprintf(fpv,"%d\t,%s\t,%d\n", user.id, user.name, user.age);
+            fwrite(&user,sizeof(User),1,fpv);
         }
         else
             found = 1;
     }
     fclose(fp);
     fclose(fpv);
-    remove("users.txt");
-    rename("temp.txt","users.txt");
-    if(!found)
-    {
+   
+    if(found) {
+        if(remove("users.txt") == 0 && rename("temp.txt", "users.txt") == 0) {
+            printf("User deleted successfully.\n");
+        } else {
+            printf("Error: Failed to delete user.\n");
+            remove("temp.txt"); 
+        }
+    } else {
         printf("Error: User not found.\n");
-    
-    }
-    else
-    {
-        printf("User deleted successfully.\n");
+        remove("temp.txt"); 
     }
 
 }
 
 
-int CountRecords()
-{
-    FILE* fp;
-    fp = fopen("users.txt","r");
-    if(fp == NULL)
-    {
-        // printf("Error: Unable to open file.\n");
-        return 0;
-    }
-    User user;
-    int count = 0;
-    while(fread(&user,sizeof(user),1,fp)>0)
-    {
-        count++;
-    }
-    fclose(fp);
-    return count;
-}
+
 
 int main()
 {
