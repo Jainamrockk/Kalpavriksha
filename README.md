@@ -1,5 +1,5 @@
 # Kalpavriksha
 <br/>
 Created Two Branches Based on their problems as: <br/>
-For Problem Statement 1 : Prob1/Calculator  <br/>
-For Problem Statement 2 : Prob2/CRUD
+For Problem Statement 1 : feat/kalpavriksha-problem-1  <br/>
+For Problem Statement 2 : feat/kalpavriksha-problem-2
