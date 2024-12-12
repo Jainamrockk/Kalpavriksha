@@ -162,7 +162,7 @@ int main()
     char expression[100];
     fgets(expression, 100, stdin);
     n = strlen(expression);
-    expression[strcspn(expression, "\n")] = 0; // To Remove newline character
+    expression[strcspn(expression, "\n")] = '\0'; // To Remove newline character
     int ans = Calculate(expression);
     printf("%d\n", ans);
     return 0;
