@@ -121,7 +121,7 @@ void solveExpression()
     
     char* expression = malloc(buffer_size);
     if (expression == NULL) {
-        printf("1");
+       
         invalidExpression();
         
     }
@@ -133,7 +133,7 @@ void solveExpression()
             buffer_size *= 2;
             expression = realloc(expression, buffer_size);
               if (expression == NULL) {
-                 printf("2");
+                 
                  invalidExpression();
                  }
         }
