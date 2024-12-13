@@ -1,28 +1,5 @@
-/*
-2. CRUD Operations in File using C Language
-Write a program where user records are stored as a list of users with fields such as unique
-ID, Name, and Age. The file is named users.txt.
- Create: Add a new user to the file.
- Read: Display all users stored in the file.
-
- Update: Modify the details of a user based on ID.
- Delete: Remove a user by their ID.
-Requirements
- The data should be stored in a structured format (object).
- Use text files to store the data.
- Implement functions to: Create a new file (if it doesn&#39;t exist), Read the file and
-display the contents, update a specific record, delete a record by modifying the file
-content.
-
-*/
-
-
-
-
 #include<stdio.h>
 #include<stdlib.h>
-#include<string.h>
-#include<ctype.h>
 
 typedef struct{
 
@@ -35,7 +12,19 @@ void clearInputBuffer() {
     while ((c = getchar()) != '\n' && c != EOF);
 }
 
-int Search(int id)
+int str_len(char *expression)
+{
+
+    
+    const char *s;
+
+        for (s = expression; *s; ++s)
+                ;
+    
+    return (int)(s - expression);
+}
+
+int searchUser(int id)
 {
     FILE* fp;
     fp = fopen("users.txt","rb");
@@ -52,10 +41,6 @@ int Search(int id)
     {
         if(user.id == id)
         {
-            // printf("User found.\n");
-            // printf("ID: %d\n",user.id);
-            // printf("Name: %s\n",user.name);
-            // printf("Age: %d\n",user.age);
             break;
         }
     }
@@ -66,7 +51,7 @@ int Search(int id)
 
 }
 
-void Create()
+void createUser()
 {
     FILE* fp;
     fp = fopen("users.txt","ab");
@@ -87,7 +72,7 @@ void Create()
 
     
 
-    if(!Search(user.id))
+    if(!searchUser(user.id))
     {
         printf("Error: User already exists.\n");
         return;
@@ -97,7 +82,7 @@ void Create()
 
     printf("Enter the Name: ");
     fgets(user.name,100,stdin);
-    user.name[strcspn(user.name, "\n")] = 0; // To Remove newline character
+    user.name[str_len(user.name)-1] = '\0'; 
 
     printf("Enter the Age: ");
      if(scanf("%d", &user.age) != 1) {
@@ -115,7 +100,7 @@ void Create()
     printf("User created successfully.\n");
 }
 
-void Read()
+void readUser()
 {
     FILE* fp;
     fp = fopen("users.txt","rb");
@@ -141,7 +126,7 @@ void Read()
 }
 
 
-void Update()
+void updateUser()
 {
     FILE* fp;
     fp = fopen("users.txt","r+b");
@@ -165,7 +150,7 @@ void Update()
               printf("Enter the new Name: ");
               getchar();
               fgets(user.name,100,stdin);
-              user.name[strcspn(user.name, "\n")] = 0; // To Remove newline character
+              user.name[str_len(user.name)-1] = '\0'; 
               printf("Enter the new Age: ");
               if(scanf("%d", &user.age) != 1) {
         printf("Error: Invalid Age format. Please enter a number.\n");
@@ -193,7 +178,7 @@ void Update()
    }
 
 
-void Delete()
+void deleteUser()
 {
     FILE* fp;
     FILE* fpv;
@@ -249,11 +234,9 @@ void Delete()
 }
 
 
-
-
-int main()
+void displayCalculator()
 {
-    int choice;
+     int choice;
     while(1)
     {
         printf("--------------------\n");
@@ -269,16 +252,16 @@ int main()
         switch(choice)
         {
             case 1:
-                Create();
+                createUser();
                 break;
             case 2:
-                Read();
+                readUser();
                 break;
             case 3:
-                Update();
+                updateUser();
                 break;    
             case 4:
-                Delete();
+                deleteUser();
                 break;
             case 5:
                 return 0;
@@ -287,6 +270,11 @@ int main()
         }
 
     } 
+}
+
+int main()
+{
+   displayCalculator();
     
     return 0;
 }
