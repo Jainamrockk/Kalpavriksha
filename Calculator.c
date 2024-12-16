@@ -55,8 +55,8 @@ int getPrecedence(char c)
 int evaluateExpression(char *expression)
 {
     int i = 0,head_val = -1,head_op = -1,lastCharWasOp = 1;
-    int values[100];
-    char operators[100];
+    int *values = (int*)malloc(100*sizeof(int));
+    char *operators = (char*)malloc(100*sizeof(char));
 
     while(expression[i]!='\0')
     {
@@ -111,7 +111,10 @@ int evaluateExpression(char *expression)
       
         values[++head_val] = applyOperator(a,b,op);
     }
-    return values[head_val];
+    int result = values[head_val];
+    free(operators);
+    free(values);
+    return result;
 }
 
 
