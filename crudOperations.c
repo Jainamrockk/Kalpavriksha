@@ -129,13 +129,19 @@ void deleteAtEnd()
     {
         return;
     }
+    if(head->next == NULL)
+    {
+        head = NULL;
+        tail = NULL;
+        return;
+    }
     listNode *ptr = head;
     while (ptr->next != tail)
     {
         ptr = ptr->next;
     }
     ptr->next = NULL;
-    free(tail);
+    tail = NULL;
     tail = ptr;
     totalNodes--;
 }
