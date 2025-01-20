@@ -34,7 +34,10 @@ void insertAtBeginning(int value)
 void insertAtEnd(int value)
 {
     if (head == NULL)
+    {
+        printf("Invalid Position\n");
         return;
+    }
 
     listNode *node = (listNode *)malloc(sizeof(listNode));
     node->data = value;
@@ -60,7 +63,10 @@ void insertAtPosition(int pos, int value)
     }
 
     if (pos > totalNodes || pos <= 0 || head == NULL)
+    {
+        printf("Invalid Position\n");
         return;
+    }
 
     listNode *ptr = head;
 
@@ -134,29 +140,31 @@ void deleteAtEnd()
     totalNodes--;
 }
 
-
 void deleteAtPosition(int position)
 {
-    if(head == NULL || position<=0 || position > totalNodes)
-    return;
-    if(position == totalNodes)
+    if (head == NULL || position <= 0 || position > totalNodes)
+    {
+        printf("Invalid Position\n");
+        return;
+    }
+    if (position == totalNodes)
     {
         deleteAtEnd();
         return;
     }
-    if(position == 1)
+    if (position == 1)
     {
         deleteAtBeginning();
         return;
     }
 
-    listNode* ptr = head;
-    while(position!=2)
+    listNode *ptr = head;
+    while (position != 2)
     {
         ptr = ptr->next;
         position--;
     }
-    listNode* node = ptr->next;
+    listNode *node = ptr->next;
     ptr->next = node->next;
     node->next = NULL;
     free(node);
@@ -169,7 +177,9 @@ int main()
     scanf("%d", &numberOfOperations);
 
     if (numberOfOperations <= 0)
+    {
         return 0;
+    }
 
     totalNodes = 1;
     head = NULL;
@@ -181,15 +191,15 @@ int main()
         {
         case 1:
             scanf("%d", &value);
-            insertAtBeginning(value);
+            insertAtEnd(value);
             break;
         case 2:
-            scanf("%d%d", &pos, &value);
-            insertAtPosition(pos, value);
+            scanf("%d", &value);
+            insertAtBeginning(value);
             break;
         case 3:
-            scanf("%d", &value);
-            insertAtEnd(value);
+            scanf("%d%d", &pos, &value);
+            insertAtPosition(pos, value);
             break;
         case 4:
             display();
@@ -205,11 +215,12 @@ int main()
             deleteAtEnd();
             break;
         case 8:
-            scanf("%d",&pos);
+            scanf("%d", &pos);
             deleteAtPosition(pos);
             break;
         default:
             printf("Invalid\n");
+            exit(0);
         }
         numberOfOperations--;
     }
