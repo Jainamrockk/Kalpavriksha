@@ -1,24 +1,21 @@
-
 Problem Statement:
-You are given a multi-level linked list structure where each column represents a list of employees, and 
-each employee has a rank (integer value). The task is to flatten this multi-level linked list into a single-level
- list, sort it based on the employee ranks, and find the kth largest employee rank in the sorted list.
+You are given an unsorted multi-level linked list structure where each column represents a list of employees, and
+each employee has a rank (integer value). The task is to find the kth largest employee rank.
 
- Input:
+Input:
 
-The first input represents the number of columns in the hierarchy (i.e., different teams or levels in the 
+The first input represents the number of columns in the hierarchy (i.e., different teams or levels in the
 hierarchy).
-For each column, the first integer is the number of employees in that column (team), followed by the employee 
+For each column, the first integer is the number of employees in that column (team), followed by the employee
 ranks (integer values).
 The last input is an integer k, indicating the kth largest element you need to find.
-
 
 Output:
 
 The output should be the kth largest rank in the sorted list after flattening the multi-level hierarchy.
 
 Input Format:
-The first line contains the number of columns 
+The first line contains the number of columns
 𝐶
 
 C (1 ≤ C ≤ 100).
@@ -26,33 +23,31 @@ C (1 ≤ C ≤ 100).
 Each column consists of two parts:
 The first part is an integer representing the number of employees in that column.
 The second part is a sequence of integers representing the employee ranks in that column.
-The last line contains a single integer 
-𝑘
-k, representing the kth largest rank to find.
+The last line contains a single integer 𝑘
+with k, representing the kth largest rank to find.
+
 Output Format:
 Output the kth largest rank in the flattened and sorted list of employee ranks.
 
 Example:
-
 Input:
 4 2 3 4
 10 20 3 1
-89 1 
+89 1
 6 8 9
 11 1 1 1
 3
 Output:
 11
 
-
 Complexity Analysis:
-Time Complexity: 
+Time Complexity:
 O(n * m * log(n)) – where n is the no of nodes in the main linked list
- (reachable using the next pointer) and m is the no of nodes in a single sub-linked list 
- (reachable using a bottom pointer).
+(reachable using the next pointer) and m is the no of nodes in a single sub-linked list
+(reachable using a bottom pointer).
 where,
-n<=10^5
-m<=10^3
-So, there must be a total of at max 10^8 nodes
-Auxiliary Space: 
+n<=10^2
+m<=10^2
+So, there must be a total of at max 10^4 nodes
+Auxiliary Space:
 O(n)
