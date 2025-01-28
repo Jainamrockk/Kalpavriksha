@@ -48,11 +48,12 @@ listNode *createLinkedList(listNode *col)
     {
         listNode *node = NULL;
         listNode *nodeTail = NULL;
-        while (col->val)
+        int count = col->val;
+        while (count>0)
         {
-            int value;
+            int value;  
             scanf("%d", &value);
-            col->val = col->val - 1;
+            count--;
             if (node == NULL)
             {
                 node = (listNode *)malloc(sizeof(listNode));
@@ -91,7 +92,7 @@ void printLinkedList(listNode *head)
         listNode *temp = head;
         while (temp)
         {
-            printf("%d", temp->val);
+            printf("%d ", temp->val);
             if (temp->bottom != NULL)
             {
                 printf("->");
@@ -174,13 +175,43 @@ listNode *flatten(listNode *head)
     return head;
 }
 
+int findLength(listNode* head)
+{
+    int length = 0;
+    while(head)
+    {
+        head = head->bottom;
+        length++;
+    }
+    return length;
+}
+
+
+void findKthLargestElement(listNode* head,int findElement)
+{
+    while(findElement>0)
+    {
+        head = head->bottom;
+        findElement--;
+    }
+    printf("%d",head->val);
+}
+
 int main()
 {
     listNode *col = createColumns();
     listNode *head = createLinkedList(col);
-    printLinkedList(head);
     head = flatten(head);
     head = mergeSort(head);
-    printLinkedList(head);
+    int listLength = findLength(head);
+    int kthElement;
+    scanf("%d",&kthElement);
+    int findElement = listLength - kthElement;
+    if(findElement<=0)
+    {
+        printf("Invalid\n");
+        return 0;
+    }
+    findKthLargestElement(head,findElement);
     return 0;
 }
