@@ -107,8 +107,8 @@ listNode* sortList(listNode* head)
     temp1->next = NULL;
     if(temp2!=NULL)
     temp2->next = NULL;
-    if(temp2!=NULL)
-    temp2->next = NULL;
+    if(temp3!=NULL)
+    temp3->next = NULL;
     if(critical !=NULL)
     {
         head = critical;
