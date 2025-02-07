@@ -141,19 +141,23 @@ void freeHashMap(HashMap* map) {
     }
 }
 
-
-int main() {
-    HashMap map;
-    initializeHashMap(&map);
-    int choice, key, value;
+void displayMenu(HashMap* map)
+{
+     int choice, key, value;
 
     while (1) {
+        printf("1. Insert (Put)\n");
+        printf("2. Search (Get)\n");
+        printf("3. Delete (Remove)\n");
+        printf("4. Display\n");
+        printf("5. Exit\n");
         printf("Enter your choice: ");
         scanf("%d", &choice);
         if(!isValidChoice(choice)){
             printf("Enter a valid choice!\n");
             break;
         }
+
 
         switch (choice) {
             case 1:
@@ -204,6 +208,11 @@ int main() {
                 break;
         }
     }
+}
 
+int main() {
+    HashMap map;
+    initializeHashMap(&map);
+    displayMenu(&map);
     return 0;
 }
